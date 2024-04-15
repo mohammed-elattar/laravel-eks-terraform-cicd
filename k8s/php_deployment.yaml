@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: php-fpm
-          image: mseel3ttar/craftscene-php:latest
+          image: 361749389927.dkr.ecr.me-south-1.amazonaws.com/craftscene-php:latest
           ports:
             - containerPort: 9000
           env:
@@ -47,6 +47,6 @@ spec:
   selector:
     app: craftscene
   ports:
-    - port: 80
-      targetPort: 80
+    - port: 9000
+      targetPort: 9000
   type: NodePort

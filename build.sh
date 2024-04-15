@@ -13,7 +13,7 @@ db_password=$(terraform output -raw db_password)
 php_image_name="$aws_id.dkr.ecr.$region.amazonaws.com/$php_img:latest"
 nginx_image_name="$aws_id.dkr.ecr.$region.amazonaws.com/$nginx_img:latest"
 namespace="craftscene-app"
-app_service_name="craftscene-app-service"
+app_service_name="craftscene-nginx-service"
 cd ..
 
 cd terraform && \
@@ -37,7 +37,7 @@ aws eks update-kubeconfig --name $cluster_name --region $region
 #
 ## ECR Login
 #echo "--------------------Login to ECR--------------------"
-aws ecr get-login-password --region $region | docker login --username AWS --password-stdin $aws_id.dkr.ecr.$region.amazonaws.com
+#aws ecr get-login-password --region $region | docker login --username AWS --password-stdin $aws_id.dkr.ecr.$region.amazonaws.com
 #
 ## push the latest build to dockerhub
 #echo "--------------------Pushing Docker Image--------------------"
@@ -65,8 +65,9 @@ sleep 60s
 
 # Get ingress URL
 echo "--------------------Application LoadBalancer URL--------------------"
-kubectl get svc -n ${namespace} ${app_service_name} -o=custom-columns=EXTERNAL-IP:.status.loadBalancer.ingress[*].hostname | tail -n +2
+kubectl get svc -n ${namespace} ${app_service_name}-o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 
+#kubectl get svc -n craftscene-app craftscene-nginx-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 # Get RDS endpoint URL
 echo "--------------------RDS endpoint URL--------------------"
 echo $rds_endpoint
