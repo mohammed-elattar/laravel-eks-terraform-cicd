@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: craftscene-nginx-deployment
+  namespace: craftscene-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: craftscene-nginx
+  template:
+    metadata:
+      labels:
+        app: craftscene-nginx
+    spec:
+      volumes:
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config
+      containers:
+        - name: nginx
+          image: mseel3ttar/craftscene-nginx:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: craftscene-nginx-service
+  namespace: craftscene-app
+spec:
+  selector:
+    app: craftscene
+  ports:
+    - port: 80
+      targetPort: 80
+  type: LoadBalancer
