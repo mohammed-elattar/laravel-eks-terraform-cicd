@@ -19,7 +19,7 @@ spec:
             name: nginx-config
       containers:
         - name: nginx
-          image: mseel3ttar/craftscene-nginx:latest
+          image: 361749389927.dkr.ecr.me-south-1.amazonaws.com/craftscene-nginx
           ports:
             - containerPort: 80
           volumeMounts:
@@ -29,23 +29,14 @@ spec:
         - name: php-fpm
           env:
             - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: rds-endpoint
-                  key: endpoint
+              value: rds-cluster.cluster-cleu4grfvxuc.me-south-1.rds.amazonaws.com
             - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: rds-username
-                  key: username
+              value: craftscene
             - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: rds-password
-                  key: password
+              value: 61l=%z1MI?*M5]my
             - name: DB_DATABASE
               value: craftscene
-          image: mseel3ttar/craftscene-php:latest
+          image: 361749389927.dkr.ecr.me-south-1.amazonaws.com/craftscene-php
           ports:
             - containerPort: 9000
 #        - name: phpmyadmin
@@ -67,7 +58,7 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-  type: NodePort
+  type: LoadBalancer
 
 ---
 #apiVersion: v1

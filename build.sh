@@ -16,17 +16,10 @@ namespace="craftscene-app"
 app_service_name="craftscene-app-service"
 cd ..
 
-# update helm repos
-helm repo update
-
-echo $db_image_name
-echo $app_image_name
-echo $rds_endpoint
-
-#cd terraform && \
-#terraform init
-#terraform apply -auto-approve
-#cd ..
+cd terraform && \
+terraform init
+terraform apply -auto-approve
+cd ..
 
 # update kubeconfig
 echo "--------------------Update Kubeconfig--------------------"
@@ -44,16 +37,16 @@ aws eks update-kubeconfig --name $cluster_name --region $region
 #
 ## ECR Login
 #echo "--------------------Login to ECR--------------------"
-#aws ecr get-login-password --region $region | docker login --username AWS --password-stdin $aws_id.dkr.ecr.$region.amazonaws.com
+aws ecr get-login-password --region $region | docker login --username AWS --password-stdin $aws_id.dkr.ecr.$region.amazonaws.com
 #
 ## push the latest build to dockerhub
 #echo "--------------------Pushing Docker Image--------------------"
 #docker push $php_image_name
 #docker push $nginx_image_name
 
-# create namespace
-echo "--------------------creating Namespace--------------------"
-kubectl create ns $namespace || true
+# Create namespace
+echo "--------------------Deploy App--------------------"
+kubectl create ns $namespace
 
 # add rds endpoint into k8s secrets
 echo "--------------------Create RDS Secrets --------------------"
@@ -64,6 +57,7 @@ kubectl create secret -n $namespace generic rds-password --from-literal=password
 # deploy the application
 echo "--------------------Deploy App--------------------"
 kubectl apply -n $namespace -f k8s/
+
 
 # Wait for application to be deployed
 echo "--------------------Wait for all pods to be running--------------------"
