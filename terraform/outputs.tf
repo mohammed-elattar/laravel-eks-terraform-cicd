@@ -12,10 +12,6 @@ output "ecr_php_repository_name" {
   value = aws_ecr_repository.ecr_repo.name
 }
 
-output "ecr_nginx_repository_name" {
-  value = aws_ecr_repository.ecr_repo_2.name
-}
-
 output "rds_cluster_endpoint" {
   value = aws_rds_cluster.rds_cluster.endpoint
 }

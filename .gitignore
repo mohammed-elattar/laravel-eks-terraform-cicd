@@ -17,6 +17,10 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/terraform/.terraform.lock.hcl
-/terraform/terraform.tfstate
-/terraform/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform
+.terraform.*
+*.tfvars
+.history
+vendor

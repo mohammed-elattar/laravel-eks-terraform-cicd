@@ -1,0 +1,11 @@
+k8s
+minikube
+nginx
+terraform
+Dockerfile
+*.yaml
+*.yml
+*.sh
+.gitignore
+.git
+*.md

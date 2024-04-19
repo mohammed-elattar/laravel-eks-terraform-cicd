@@ -56,13 +56,13 @@ variable "zone_offset" {
 
 variable "asg_sys_instance_types" {
   type        = list(string)
-  default     = ["t3.medium"]
+  default     = ["t3a.medium"]
   description = "List of EC2 instance machine types to be used in EKS for the system workload."
 }
 
 variable "asg_dev_instance_types" {
   type        = list(string)
-  default     = ["t3.medium"]
+  default     = ["t3a.medium"]
   description = "List of EC2 instance machine types to be used in EKS for development workload."
 }
 
@@ -87,7 +87,7 @@ variable "autoscaling_average_cpu" {
 variable "db_username" {
   description = "The username for the DB instance"
   type        = string
-  default = "craftscene"
+  default     = "craftscene"
 }
 
 variable "rds_cluster_name" {
@@ -100,6 +100,12 @@ variable "rds_instance_name" {
   default = "rds-instance"
 }
 
+# https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.DBInstanceClass.html
+variable "rds_instance_type" {
+  type    = string
+  default = "db.r5.large"
+}
+
 variable "rds_engine" {
   type    = string
   default = "aurora-mysql"
@@ -107,10 +113,10 @@ variable "rds_engine" {
 
 variable "db_name" {
   type    = string
-  default = "craftscene"
+  default = "craftscene_db"
 }
 
 variable "rds_engine_version" {
   type    = string
-  default = "8.0.mysql_aurora.3.02.0"
+  default = "5.7.mysql_aurora.2.11.5"
 }
